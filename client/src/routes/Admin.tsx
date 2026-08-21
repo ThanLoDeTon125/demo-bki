@@ -12,6 +12,7 @@ import {
   MapPinned,
   Scroll,
   Coffee,
+  Layers,
 } from "lucide-react";
 import { API_BASE_URL, createScanConnection } from "../signalr/connection";
 import { RESULT_OPTIONS, buildResultPayload, type ResultOption } from "../data/ritiFarmContent";
@@ -22,6 +23,7 @@ interface IncomingScan {
 }
 
 const OPTION_ICONS = {
+  combined: Layers,
   traceability: MapPinned,
   heritage: Scroll,
   tea_ritual: Coffee,

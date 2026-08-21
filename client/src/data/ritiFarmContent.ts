@@ -7,7 +7,7 @@ export const PRODUCT_INFO = {
   verifiedBy: "Sản phẩm đã qua kiểm định dữ liệu bởi Sankit",
 };
 
-export type ResultOptionId = "traceability" | "heritage" | "tea_ritual";
+export type ResultOptionId = "combined" | "traceability" | "heritage" | "tea_ritual";
 
 export interface ResultOption {
   id: ResultOptionId;
@@ -16,6 +16,11 @@ export interface ResultOption {
 }
 
 export const RESULT_OPTIONS: ResultOption[] = [
+  {
+    id: "combined",
+    title: "Tất cả thông tin (Gộp 3 trong 1)",
+    description: "Hiển thị đầy đủ Truy xuất nguồn gốc, Câu chuyện di sản & Nghi thức pha trà",
+  },
   {
     id: "traceability",
     title: "Truy xuất nguồn gốc",
@@ -47,6 +52,7 @@ export const TRACEABILITY_ITEMS: TraceabilityItem[] = [
     label: "Vùng trồng",
     value: "Thôn Bái, Sơn Lai, Nho Quan, Ninh Bình (Vùng đệm Di sản Tràng An).",
     actionLabel: "Vị trí Google Maps Nông trại",
+    imageUrl: "/riti/image4.jpg",
   },
   {
     label: "Tiêu chuẩn Canh tác",
@@ -163,6 +169,17 @@ export const TEA_RECIPES: TeaRecipe[] = [
 
 // ---------- Payload types gửi qua SignalR tới /projector ----------
 
+export interface CombinedResultPayload {
+  type: "combined";
+  scanImageUrl?: string;
+  product: typeof PRODUCT_INFO;
+  items: TraceabilityItem[];
+  gallery: string[];
+  cards: HeritageCard[];
+  brewing: typeof BREWING_TIMER;
+  recipes: TeaRecipe[];
+}
+
 export interface TraceabilityResultPayload {
   type: "traceability";
   scanImageUrl?: string;
@@ -187,6 +204,7 @@ export interface TeaRitualResultPayload {
 }
 
 export type ProjectorResultPayload =
+  | CombinedResultPayload
   | TraceabilityResultPayload
   | HeritageResultPayload
   | TeaRitualResultPayload;
@@ -196,6 +214,17 @@ export function buildResultPayload(
   scanImageUrl?: string
 ): ProjectorResultPayload {
   switch (optionId) {
+    case "combined":
+      return {
+        type: "combined",
+        scanImageUrl,
+        product: PRODUCT_INFO,
+        items: TRACEABILITY_ITEMS,
+        gallery: PROCESSING_GALLERY,
+        cards: HERITAGE_CARDS,
+        brewing: BREWING_TIMER,
+        recipes: TEA_RECIPES,
+      };
     case "traceability":
       return {
         type: "traceability",

@@ -6,6 +6,7 @@ import type { ProjectorResultPayload } from "../data/ritiFarmContent";
 import TraceabilityDisplay from "../components/TraceabilityDisplay";
 import HeritageDisplay from "../components/HeritageDisplay";
 import TeaRitualDisplay from "../components/TeaRitualDisplay";
+import CombinedDisplay from "../components/CombinedDisplay";
 
 // URL trang /mobile mà điện thoại sẽ quét QR để mở.
 // Cố định theo IP LAN của máy tính để QR luôn đúng dù /projector được mở
@@ -65,6 +66,8 @@ export default function Projector() {
   }
 
   switch (result.type) {
+    case "combined":
+      return <CombinedDisplay {...result} />;
     case "traceability":
       return <TraceabilityDisplay {...result} />;
     case "heritage":
